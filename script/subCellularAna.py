@@ -24,7 +24,7 @@ def subPlot(df_pos,tiles,alpha,vmin,vmax,title):
              minV = 0
              centerV = 0.5
              cmap = colors.LinearSegmentedColormap.from_list('', ['white','grey','black'])
-             norm = colors.DivergingNorm(vmin=minV, vcenter=centerV, vmax=maxV)
+             norm = colors.TwoSlopeNorm(vmin=minV, vcenter=centerV, vmax=maxV)
 
              fig, ax = plt.subplots()
              fig.gca().set_aspect('equal', adjustable='box')
@@ -67,13 +67,15 @@ def subCellularAna(DGEdir,workingdir,spatial,seqscope1st,tiles,alpha,vmin,vmax):
         vmax=2
 
     miseq_pos = pd.read_csv(spatial,delim_whitespace=True, header=None)
-    miseq_pos.columns = ['HDMI','lane_miseq','tile_miseq','x_miseq','y_miseq']
+    miseq_pos.set_axis(['HDMI','lane_miseq','tile_miseq','x_miseq','y_miseq'], axis='columns')
     tiles_cat = '|'.join(tiles)
     miseq_pos[miseq_pos['tile_miseq'].astype(str).str.contains(tiles_cat)]
     if seqscope1st=='MiSeq':
         bottom= miseq_pos[miseq_pos['tile_miseq']>=2000]    #This should be made more flexible
-    if seqscope1st=='HiSeq':
+    elif seqscope1st=='HiSeq':
         bottom=miseq_pos
+    else:
+        raise NameError('Not recognizable platform')
         
     os.chdir(DGEdir) #Velocyto/raw/
     #Read featrures.tsv
@@ -89,10 +91,10 @@ def subCellularAna(DGEdir,workingdir,spatial,seqscope1st,tiles,alpha,vmin,vmax):
     #Read  matrix.mtx and create splice and unsplice matrix
     m = pd.read_csv(r"matrix.mtx", sep=' ',skiprows=[0,1,2],header=None)
     splice=m[[0,1,2]]
-    splice.columns = ['gene','barcode','umi']
+    splice.set_axis(['gene','barcode','umi'], axis='columns')
     
     unsplice = m[[0,1,3]]
-    unsplice.columns = ['gene','barcode','umi']
+    unsplice.set_axis(['gene','barcode','umi'], axis='columns')
     
     #randomly divide the genes to three sets
     #set=[1,2,3]
