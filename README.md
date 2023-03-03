@@ -1,3 +1,6 @@
+# This is not the official repository.
+# This is not the official repository.
+# This is not the official repository.
 # Seq-Scope Data Analysis Pipeline
 
 Seq-Scope is a spatial barcoding technology with a resolution almost comparable to an optical microscope. Seq-Scope is based on a solid-phase amplification of randomly barcoded single-molecule oligonucleotides using an Illumina sequencing-by-synthesis platform. The resulting clusters annotated with spatial coordinates are processed to expose RNA-capture moiety. These RNA-capturing barcoded clusters define the pixels of Seq-Scope that are approximately 0.5-1 μm apart from each other. For more information, please refer to the link (https://doi.org/10.1101/2021.01.25.427807).
